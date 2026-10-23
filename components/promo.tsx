@@ -10,15 +10,15 @@ export const Promo = () => {
         <div className="flex items-center gap-x-2">
           <Image src="/unlimited.svg" alt="Pro" height={26} width={26} />
 
-          <h3 className="text-lg font-bold">Upgrade to Pro</h3>
+          <h3 className="text-lg font-bold">שדרגו ל-Pro</h3>
         </div>
 
-        <p className="text-muted-foreground">Get unlimited hearts and more!</p>
+        <p className="text-muted-foreground">קבלו לבבות ללא הגבלה ועוד!</p>
       </div>
 
       <Button variant="super" className="w-full" size="lg" asChild>
         <Link href="/shop" prefetch>
-          Upgrade today
+          שדרגו היום
         </Link>
       </Button>
     </div>

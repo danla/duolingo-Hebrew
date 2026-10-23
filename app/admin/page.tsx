@@ -11,7 +11,11 @@ const AdminPage = async () => {
 
   if (!isAdmin) redirect("/");
 
-  return <App />;
+  return (
+    <div dir="ltr">
+      <App />
+    </div>
+  );
 };
 
 export default AdminPage;

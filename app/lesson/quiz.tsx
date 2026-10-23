@@ -12,7 +12,6 @@ import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { reduceHearts } from "@/actions/user-progress";
 import { MAX_HEARTS } from "@/constants";
 import { challengeOptions, challenges, userSubscription } from "@/db/schema";
-import { isHebrew } from "@/lib/language";
 import { useHeartsModal } from "@/store/use-hearts-modal";
 import { usePracticeModal } from "@/store/use-practice-modal";
 
@@ -137,7 +136,7 @@ export const Quiz = ({
               setHearts((prev) => Math.min(prev + 1, MAX_HEARTS));
             }
           })
-          .catch(() => toast.error("Something went wrong. Please try again."));
+          .catch(() => toast.error("משהו השתבש. נסו שוב."));
       });
     } else {
       startTransition(() => {
@@ -153,7 +152,7 @@ export const Quiz = ({
 
             if (!response?.error) setHearts((prev) => Math.max(prev - 1, 0));
           })
-          .catch(() => toast.error("Something went wrong. Please try again."));
+          .catch(() => toast.error("משהו השתבש. נסו שוב."));
       });
     }
   };
@@ -172,7 +171,7 @@ export const Quiz = ({
         <div className="mx-auto flex h-full max-w-lg flex-col items-center justify-center gap-y-4 text-center lg:gap-y-8">
           <Image
             src="/finish.svg"
-            alt="Finish"
+            alt="סיום"
             className="hidden lg:block"
             height={100}
             width={100}
@@ -180,14 +179,14 @@ export const Quiz = ({
 
           <Image
             src="/finish.svg"
-            alt="Finish"
+            alt="סיום"
             className="block lg:hidden"
             height={100}
             width={100}
           />
 
           <h1 className="text-lg font-bold text-neutral-700 lg:text-3xl">
-            Great job! <br /> You&apos;ve completed the lesson.
+            עבודה מצוינת! <br /> סיימתם את השיעור.
           </h1>
 
           <div className="flex w-full items-center gap-x-4">
@@ -209,11 +208,7 @@ export const Quiz = ({
   }
 
   const title =
-    challenge.type === "ASSIST"
-      ? isHebrew(challenge.question)
-        ? "בחרו את הפירוש הנכון"
-        : "Select the correct meaning"
-      : challenge.question;
+    challenge.type === "ASSIST" ? "בחרו את הפירוש הנכון" : challenge.question;
 
   return (
     <>

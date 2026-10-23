@@ -15,6 +15,7 @@
     "db:prod": "tsx ./scripts/prod.ts"
   },
   "dependencies": {
+    "@clerk/localizations": "^4.24.0",
     "@clerk/nextjs": "^7.9.17",
     "@neondatabase/serverless": "^1.2.0",
     "@radix-ui/react-avatar": "^1.2.6",
@@ -28,7 +29,7 @@
     "dotenv": "^18.0.1",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.52.0",
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "ra-data-simple-rest": "^5.15.3",
     "react": "^19.3.0",
     "react-admin": "^5.15.4",
@@ -49,7 +50,7 @@
     "autoprefixer": "^10.6.1",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9",
-    "eslint-config-next": "16.3.6",
+    "eslint-config-next": "16.4.2",
     "eslint-config-prettier": "^10.1.8",
     "pg": "^8.23.1",
     "postcss": "^8",

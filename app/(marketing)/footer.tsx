@@ -9,67 +9,67 @@ export const Footer = () => {
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/il.svg"
-            alt="Hebrew"
+            alt="עברית"
             height={32}
             width={40}
-            className="mr-4 rounded-md"
+            className="me-4 rounded-md"
           />
-          Hebrew
+          עברית
         </Button>
 
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/hr.svg"
-            alt="Croatian"
+            alt="קרואטית"
             height={32}
             width={40}
-            className="mr-4 rounded-md"
+            className="me-4 rounded-md"
           />
-          Croatian
+          קרואטית
         </Button>
 
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/es.svg"
-            alt="Spanish"
+            alt="ספרדית"
             height={32}
             width={40}
-            className="mr-4 rounded-md"
+            className="me-4 rounded-md"
           />
-          Spanish
+          ספרדית
         </Button>
 
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/fr.svg"
-            alt="French"
+            alt="צרפתית"
             height={32}
             width={40}
-            className="mr-4 rounded-md"
+            className="me-4 rounded-md"
           />
-          French
+          צרפתית
         </Button>
 
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/it.svg"
-            alt="Italian"
+            alt="איטלקית"
             height={32}
             width={40}
-            className="mr-4 rounded-md"
+            className="me-4 rounded-md"
           />
-          Italian
+          איטלקית
         </Button>
 
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/jp.svg"
-            alt="Japanese"
+            alt="יפנית"
             height={32}
             width={40}
-            className="mr-4 rounded-md"
+            className="me-4 rounded-md"
           />
-          Japanese
+          יפנית
         </Button>
       </div>
     </div>

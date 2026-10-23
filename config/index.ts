@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const siteConfig: Metadata = {
   title: "Lingo",
   description:
-    "Interactive platform for language learning with lessons, quizzes, and progress tracking.",
+    "פלטפורמה אינטראקטיבית ללימוד שפות עם שיעורים, חידונים ומעקב התקדמות.",
   keywords: [
     "reactjs",
     "nextjs",
