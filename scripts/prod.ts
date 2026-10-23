@@ -4,9 +4,22 @@ import { drizzle } from "drizzle-orm/neon-http";
 
 import * as schema from "@/db/schema";
 
+import {
+  COURSES,
+  CURRICULUM,
+  getAnswer,
+  getAudioSrc,
+  getPrompt,
+  getSelectQuestion,
+  getUnitText,
+} from "./data/courses";
+
 const sql = neon(process.env.DATABASE_URL);
 
 const db = drizzle(sql, { schema });
+
+// Number of ASSIST (translate) challenges added after the SELECT ones.
+const ASSIST_PER_LESSON = 3;
 
 const main = async () => {
   try {
@@ -23,308 +36,95 @@ const main = async () => {
       db.delete(schema.userSubscription),
     ]);
 
-    // Insert courses
-    const courses = await db
-      .insert(schema.courses)
-      .values([{ title: "Spanish", imageSrc: "/es.svg" }])
-      .returning();
+    for (const courseDefinition of COURSES) {
+      const { from, to } = courseDefinition;
 
-    // For each course, insert units
-    for (const course of courses) {
-      const units = await db
-        .insert(schema.units)
-        .values([
-          {
-            courseId: course.id,
-            title: "Unit 1",
-            description: `Learn the basics of ${course.title}`,
-            order: 1,
-          },
-          {
-            courseId: course.id,
-            title: "Unit 2",
-            description: `Learn intermediate ${course.title}`,
-            order: 2,
-          },
-        ])
+      const [course] = await db
+        .insert(schema.courses)
+        .values({
+          title: courseDefinition.title,
+          imageSrc: courseDefinition.imageSrc,
+        })
         .returning();
 
-      // For each unit, insert lessons
-      for (const unit of units) {
-        const lessons = await db
-          .insert(schema.lessons)
-          .values([
-            { unitId: unit.id, title: "Nouns", order: 1 },
-            { unitId: unit.id, title: "Verbs", order: 2 },
-            { unitId: unit.id, title: "Adjectives", order: 3 },
-            { unitId: unit.id, title: "Phrases", order: 4 },
-            { unitId: unit.id, title: "Sentences", order: 5 },
-          ])
+      // For each course, insert units
+      for (const [unitIndex, unitData] of CURRICULUM.entries()) {
+        const [unit] = await db
+          .insert(schema.units)
+          .values({
+            courseId: course.id,
+            ...getUnitText(courseDefinition, unitIndex),
+            order: unitIndex + 1,
+          })
           .returning();
 
-        // For each lesson, insert challenges
-        for (const lesson of lessons) {
-          const challenges = await db
-            .insert(schema.challenges)
-            .values([
-              {
-                lessonId: lesson.id,
-                type: "SELECT",
-                question: 'Which one of these is "the man"?',
-                order: 1,
-              },
-              {
-                lessonId: lesson.id,
-                type: "SELECT",
-                question: 'Which one of these is "the woman"?',
-                order: 2,
-              },
-              {
-                lessonId: lesson.id,
-                type: "SELECT",
-                question: 'Which one of these is "the boy"?',
-                order: 3,
-              },
-              {
-                lessonId: lesson.id,
-                type: "ASSIST",
-                question: '"the man"',
-                order: 4,
-              },
-              {
-                lessonId: lesson.id,
-                type: "SELECT",
-                question: 'Which one of these is "the zombie"?',
-                order: 5,
-              },
-              {
-                lessonId: lesson.id,
-                type: "SELECT",
-                question: 'Which one of these is "the robot"?',
-                order: 6,
-              },
-              {
-                lessonId: lesson.id,
-                type: "SELECT",
-                question: 'Which one of these is "the girl"?',
-                order: 7,
-              },
-              {
-                lessonId: lesson.id,
-                type: "ASSIST",
-                question: '"the zombie"',
-                order: 8,
-              },
-            ])
+        // For each unit, insert lessons
+        for (const [lessonIndex, lessonData] of unitData.lessons.entries()) {
+          const [lesson] = await db
+            .insert(schema.lessons)
+            .values({
+              unitId: unit.id,
+              title: lessonData.title[from],
+              order: lessonIndex + 1,
+            })
             .returning();
 
-          // For each challenge, insert challenge options
-          for (const challenge of challenges) {
-            if (challenge.order === 1) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "el hombre",
-                  imageSrc: "/man.svg",
-                  audioSrc: "/es_man.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "la mujer",
-                  imageSrc: "/woman.svg",
-                  audioSrc: "/es_woman.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el chico",
-                  imageSrc: "/boy.svg",
-                  audioSrc: "/es_boy.mp3",
-                },
-              ]);
-            }
+          const { concepts } = lessonData;
 
-            if (challenge.order === 2) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "la mujer",
-                  imageSrc: "/woman.svg",
-                  audioSrc: "/es_woman.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el chico",
-                  imageSrc: "/boy.svg",
-                  audioSrc: "/es_boy.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el hombre",
-                  imageSrc: "/man.svg",
-                  audioSrc: "/es_man.mp3",
-                },
-              ]);
-            }
+          const challengeData = [
+            ...concepts.map((concept, i) => ({
+              type: "SELECT" as const,
+              question: getSelectQuestion(getPrompt(concept, from), from),
+              conceptIndex: i,
+            })),
+            ...concepts.slice(0, ASSIST_PER_LESSON).map((concept, i) => ({
+              type: "ASSIST" as const,
+              question: `"${getPrompt(concept, from)}"`,
+              conceptIndex: i,
+            })),
+          ];
 
-            if (challenge.order === 3) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "la mujer",
-                  imageSrc: "/woman.svg",
-                  audioSrc: "/es_woman.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el hombre",
-                  imageSrc: "/man.svg",
-                  audioSrc: "/es_man.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "el chico",
-                  imageSrc: "/boy.svg",
-                  audioSrc: "/es_boy.mp3",
-                },
-              ]);
-            }
+          // For each lesson, insert challenges
+          const challenges = await db
+            .insert(schema.challenges)
+            .values(
+              challengeData.map(({ type, question }, i) => ({
+                lessonId: lesson.id,
+                type,
+                question,
+                order: i + 1,
+              }))
+            )
+            .returning();
 
-            if (challenge.order === 4) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "la mujer",
-                  audioSrc: "/es_woman.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "el hombre",
-                  audioSrc: "/es_man.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el chico",
-                  audioSrc: "/es_boy.mp3",
-                },
-              ]);
-            }
+          // For each challenge, insert the correct option and two distractors
+          // from the same lesson, rotating where the correct answer appears.
+          await db.insert(schema.challengeOptions).values(
+            challenges.flatMap((challenge) => {
+              const { type, conceptIndex } = challengeData[challenge.order - 1];
+              const optionIndexes = [1, 2].map(
+                (offset) => (conceptIndex + offset) % concepts.length
+              );
+              optionIndexes.splice(challenge.order % 3, 0, conceptIndex);
 
-            if (challenge.order === 5) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el hombre",
-                  imageSrc: "/man.svg",
-                  audioSrc: "/es_man.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "la mujer",
-                  imageSrc: "/woman.svg",
-                  audioSrc: "/es_woman.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "el zombie",
-                  imageSrc: "/zombie.svg",
-                  audioSrc: "/es_zombie.mp3",
-                },
-              ]);
-            }
+              return optionIndexes.map((optionIndex) => {
+                const concept = concepts[optionIndex];
 
-            if (challenge.order === 6) {
-              await db.insert(schema.challengeOptions).values([
-                {
+                return {
                   challengeId: challenge.id,
-                  correct: true,
-                  text: "el robot",
-                  imageSrc: "/robot.svg",
-                  audioSrc: "/es_robot.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el zombie",
-                  imageSrc: "/zombie.svg",
-                  audioSrc: "/es_zombie.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el chico",
-                  imageSrc: "/boy.svg",
-                  audioSrc: "/es_boy.mp3",
-                },
-              ]);
-            }
-
-            if (challenge.order === 7) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "la nina",
-                  imageSrc: "/girl.svg",
-                  audioSrc: "/es_girl.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el zombie",
-                  imageSrc: "/zombie.svg",
-                  audioSrc: "/es_zombie.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el hombre",
-                  imageSrc: "/man.svg",
-                  audioSrc: "/es_man.mp3",
-                },
-              ]);
-            }
-
-            if (challenge.order === 8) {
-              await db.insert(schema.challengeOptions).values([
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "la mujer",
-                  audioSrc: "/es_woman.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: true,
-                  text: "el zombie",
-                  audioSrc: "/es_zombie.mp3",
-                },
-                {
-                  challengeId: challenge.id,
-                  correct: false,
-                  text: "el chico",
-                  audioSrc: "/es_boy.mp3",
-                },
-              ]);
-            }
-          }
+                  correct: optionIndex === conceptIndex,
+                  text: getAnswer(concept, to, from),
+                  imageSrc:
+                    type === "SELECT" ? (concept.imageSrc ?? null) : null,
+                  audioSrc: getAudioSrc(concept, to),
+                };
+              });
+            })
+          );
         }
       }
     }
+
     console.log("Database seeded successfully");
   } catch (error) {
     console.error(error);

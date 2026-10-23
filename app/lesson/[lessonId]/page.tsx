@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { getLesson, getUserProgress, getUserSubscription } from "@/db/queries";
+import { getCourseSpeechLang } from "@/lib/language";
 
 import { Quiz } from "../quiz";
 
@@ -43,6 +44,9 @@ const LessonIdPage = async ({ params }: LessonIdPageProps) => {
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
       userSubscription={userSubscription}
+      speechLang={getCourseSpeechLang(
+        userProgress.activeCourse?.imageSrc ?? ""
+      )}
     />
   );
 };

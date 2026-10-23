@@ -44,7 +44,9 @@ export const Card = ({
         className="rounded-lg border object-cover drop-shadow-md"
       />
 
-      <p className="mt-3 text-center font-bold text-neutral-700">{title}</p>
+      <p dir="auto" className="mt-3 text-center font-bold text-neutral-700">
+        {title}
+      </p>
     </div>
   );
 };

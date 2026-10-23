@@ -10,6 +10,7 @@ type ChallengeProps = {
   selectedOption?: number;
   disabled?: boolean;
   type: (typeof challenges.$inferSelect)["type"];
+  speechLang?: string;
 };
 
 export const Challenge = ({
@@ -19,6 +20,7 @@ export const Challenge = ({
   selectedOption,
   disabled,
   type,
+  speechLang,
 }: ChallengeProps) => {
   return (
     <div
@@ -42,6 +44,7 @@ export const Challenge = ({
           audioSrc={option.audioSrc}
           disabled={disabled}
           type={type}
+          speechLang={speechLang}
         />
       ))}
     </div>
