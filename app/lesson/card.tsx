@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useAudio, useKey } from "react-use";
 
 import { challenges } from "@/db/schema";
+import { speak } from "@/lib/language";
 import { cn } from "@/lib/utils";
 
 type CardProps = {
@@ -17,6 +18,7 @@ type CardProps = {
   status?: "correct" | "wrong" | "none";
   disabled?: boolean;
   type: (typeof challenges.$inferSelect)["type"];
+  speechLang?: string;
 };
 
 export const Card = ({
@@ -29,6 +31,7 @@ export const Card = ({
   status,
   disabled,
   type,
+  speechLang,
 }: CardProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [audio, _, controls] = useAudio({ src: audioSrc || "" });
@@ -36,9 +39,10 @@ export const Card = ({
   const handleClick = useCallback(() => {
     if (disabled) return;
 
-    void controls.play();
+    if (audioSrc) void controls.play();
+    else speak(text, speechLang);
     onClick();
-  }, [disabled, onClick, controls]);
+  }, [disabled, onClick, controls, audioSrc, text, speechLang]);
 
   useKey(shortcut, handleClick, {}, [handleClick]);
 
@@ -73,6 +77,7 @@ export const Card = ({
       >
         {type === "ASSIST" && <div aria-hidden />}
         <p
+          dir="auto"
           className={cn(
             "text-sm text-neutral-600 lg:text-base",
             selected && "text-sky-500",
