@@ -243,10 +243,20 @@ type CourseDefinition = {
 };
 
 export const COURSES: CourseDefinition[] = [
-  { title: "Spanish", imageSrc: "/es.svg", from: "en", to: "es" },
-  { title: "Hebrew", imageSrc: "/il.svg", from: "en", to: "he" },
-  { title: "אנגלית · English", imageSrc: "/us.svg", from: "he", to: "en" },
-  { title: "ספרדית · Spanish", imageSrc: "/es.svg", from: "he", to: "es" },
+  { title: "אנגלית", imageSrc: "/us.svg", from: "he", to: "en" },
+  { title: "ספרדית", imageSrc: "/es.svg", from: "he", to: "es" },
+  {
+    title: "Hebrew for English speakers",
+    imageSrc: "/il.svg",
+    from: "en",
+    to: "he",
+  },
+  {
+    title: "Spanish for English speakers",
+    imageSrc: "/es.svg",
+    from: "en",
+    to: "es",
+  },
 ];
 
 const LANGUAGE_NAMES: Record<Language, Record<"en" | "he", string>> = {

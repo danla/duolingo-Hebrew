@@ -1,6 +1,7 @@
+import { heIL } from "@clerk/localizations";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata, Viewport } from "next";
-import { Nunito } from "next/font/google";
+import { Rubik } from "next/font/google";
 
 import { ExitModal } from "@/components/modals/exit-modal";
 import { HeartsModal } from "@/components/modals/hearts-modal";
@@ -10,7 +11,7 @@ import { siteConfig } from "@/config";
 
 import "./globals.css";
 
-const font = Nunito({ subsets: ["latin"] });
+const font = Rubik({ subsets: ["latin", "hebrew"] });
 
 export const viewport: Viewport = {
   themeColor: "#22C55E",
@@ -25,6 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
+      localization={heIL}
       appearance={{
         options: {
           logoImageUrl: "/favicon.ico",
@@ -36,9 +38,9 @@ export default function RootLayout({
       telemetry={false}
       afterSignOutUrl="/"
     >
-      <html lang="en">
+      <html lang="he" dir="rtl">
         <body className={font.className}>
-          <Toaster theme="light" richColors closeButton />
+          <Toaster theme="light" dir="rtl" richColors closeButton />
           <ExitModal />
           <HeartsModal />
           <PracticeModal />

@@ -49,16 +49,16 @@ const LeaderboardPage = async () => {
         <div className="flex w-full flex-col items-center">
           <Image
             src="/leaderboard.svg"
-            alt="Leaderboard"
+            alt="טבלת מובילים"
             height={90}
             width={90}
           />
 
           <h1 className="my-6 text-center text-2xl font-bold text-neutral-800">
-            Leaderboard
+            טבלת מובילים
           </h1>
           <p className="mb-6 text-center text-lg text-muted-foreground">
-            See where you stand among other learners in the community.
+            ראו איפה אתם עומדים לעומת לומדים אחרים בקהילה.
           </p>
 
           <Separator className="mb-4 h-0.5 rounded-full" />
@@ -67,9 +67,9 @@ const LeaderboardPage = async () => {
               key={userProgress.userId}
               className="flex w-full items-center rounded-xl p-2 px-4 hover:bg-gray-200/50"
             >
-              <p className="mr-4 font-bold text-lime-700">{i + 1}</p>
+              <p className="me-4 font-bold text-lime-700">{i + 1}</p>
 
-              <Avatar className="ml-3 mr-6 h-12 w-12 border bg-green-500">
+              <Avatar className="me-6 ms-3 h-12 w-12 border bg-green-500">
                 <AvatarImage
                   src={userProgress.userImageSrc}
                   className="object-cover"

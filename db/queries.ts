@@ -16,7 +16,9 @@ import {
 const DAY_IN_MS = 86_400_000;
 
 export const getCourses = cache(async () => {
-  const data = await db.query.courses.findMany();
+  const data = await db.query.courses.findMany({
+    orderBy: (courses, { asc }) => [asc(courses.id)],
+  });
 
   return data;
 });

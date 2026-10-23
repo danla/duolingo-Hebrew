@@ -36,7 +36,7 @@ export const Header = () => {
           <Link
             href="/"
             prefetch
-            className="flex items-center gap-x-3 pb-7 pl-4 pt-8"
+            className="flex items-center gap-x-3 pb-7 ps-4 pt-8"
           >
             <Image src="/mascot.svg" alt="Mascot" height={40} width={40} />
 
@@ -57,7 +57,7 @@ export const Header = () => {
               <Show when="signed-out">
                 <SignInButton mode="modal">
                   <Button size="lg" variant="ghost">
-                    Login
+                    התחברות
                   </Button>
                 </SignInButton>
               </Show>
@@ -70,7 +70,7 @@ export const Header = () => {
               >
                 <Image
                   src="/github.svg"
-                  alt="Source Code"
+                  alt="קוד מקור"
                   height={20}
                   width={20}
                 />

@@ -38,8 +38,8 @@ export const UserProgress = ({
             src="/points.svg"
             height={28}
             width={28}
-            alt="Points"
-            className="mr-2"
+            alt="נקודות"
+            className="me-2"
           />
           {points}
         </Button>
@@ -51,8 +51,8 @@ export const UserProgress = ({
             src="/heart.svg"
             height={22}
             width={22}
-            alt="Hearts"
-            className="mr-2"
+            alt="לבבות"
+            className="me-2"
           />
           {hasActiveSubscription ? (
             <InfinityIcon className="stroke-3 h-4 w-4" />
