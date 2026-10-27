@@ -139,13 +139,6 @@ CLERK_SECRET_KEY=sk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # neon db uri
 DATABASE_URL="postgresql://<user>:<password>@<host>:<post>/lingo?sslmode=require"
 
-# stripe api key and webhook
-STRIPE_API_SECRET_KEY=sk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-STRIPE_WEBHOOK_SECRET=whsec_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-# public app url
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-
 # clerk admin user id(s) separated by comma (,)
 CLERK_ADMIN_IDS="user_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 # or CLERK_ADMIN_IDS="user_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx, user_xxxxxxxxxxxxxxxxxxxxxx" for multiple admins.
@@ -168,19 +161,7 @@ CLERK_ADMIN_IDS="user_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       - Replace `<user>`, `<password>`, `<host>`, and `<port>` placeholders in the URI with your actual database credentials.
       - Ensure to include `?sslmode=require` at the end of the URI for SSL mode requirement.
 
-7. Fetch Stripe API Key and Webhook Secret
-   1. **Source**: Stripe Dashboard
-   2. **Procedure**:
-      - Log in to your Stripe account.
-      - Navigate to the dashboard or API settings.
-      - Find the section related to API keys and webhook secrets.
-      - Copy the `STRIPE_API_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`.
-
-8. Specify Public App URL
-   1. **Procedure**:
-      - Replace `http://localhost:3000` with the URL of your deployed application.
-
-9. Identify Clerk Admin User IDs
+7. Identify Clerk Admin User IDs
    1. **Source**: Clerk Dashboard or Settings Page
    2. **Procedure**:
       - Log in to your Clerk account.
@@ -188,12 +169,12 @@ CLERK_ADMIN_IDS="user_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       - Find the section related to admin user IDs.
       - Copy the user IDs provided, ensuring they are separated by commas and spaces.
 
-10. Save and Secure:
+8. Save and Secure:
     - Save the changes to the `.env.local` file.
 
-11. Install Project Dependencies using `pnpm install`.
+9. Install Project Dependencies using `pnpm install`.
 
-12. Run the Seed Script:
+10. Run the Seed Script:
 
 In the same terminal, run the following command to execute the seed script:
 
@@ -203,11 +184,11 @@ pnpm run db:push && pnpm run db:prod
 
 This command uses `tsx` to execute the Typescript file (`scripts/prod.ts`) and writes challenges data in database.
 
-13. Verify Data in Database:
+11. Verify Data in Database:
 
 Once the script completes, check your database to ensure that the challenges data has been successfully seeded.
 
-14. Now app is fully configured 👍 and you can start using this app using either one of `pnpm dev`.
+12. Now app is fully configured 👍 and you can start using this app using either one of `pnpm dev`.
 
 **NOTE:** Please make sure to keep your API keys and configuration values secure and do not expose them publicly.
 

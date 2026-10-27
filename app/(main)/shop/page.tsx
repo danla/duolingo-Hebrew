@@ -49,11 +49,7 @@ const ShopPage = async () => {
             השתמשו בנקודות שלכם לדברים מגניבים.
           </p>
 
-          <Items
-            hearts={userProgress.hearts}
-            points={userProgress.points}
-            hasActiveSubscription={isPro}
-          />
+          <Items hearts={userProgress.hearts} points={userProgress.points} />
         </div>
       </FeedWrapper>
     </div>

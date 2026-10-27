@@ -48,7 +48,7 @@ export const HeartsModal = () => {
           </DialogTitle>
 
           <DialogDescription className="text-center text-base">
-            שדרגו ל-Pro ללבבות ללא הגבלה, או קנו אותם בחנות.
+            מלאו לבבות בחנות בעזרת הנקודות שלכם, או תרגלו שיעור שכבר סיימתם.
           </DialogDescription>
         </DialogHeader>
 
@@ -60,7 +60,7 @@ export const HeartsModal = () => {
               size="lg"
               onClick={onClick}
             >
-              לבבות ללא הגבלה
+              לחנות
             </Button>
 
             <Button
