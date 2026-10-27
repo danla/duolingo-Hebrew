@@ -12,7 +12,8 @@
     "format:fix": "prettier --write .",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
-    "db:prod": "tsx ./scripts/prod.ts"
+    "db:prod": "tsx ./scripts/prod.ts",
+    "db:setup": "tsx ./scripts/setup.ts"
   },
   "dependencies": {
     "@clerk/localizations": "^4.24.0",
