@@ -1,0 +1,479 @@
+<title>קרקוב וורוצלאב</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Rubik:wght@600;700&display=swap">
+<style>
+/* Layout: sticky top bar, one scrolling view, bottom tab bar. Winter-market palette: ink blue, mulled-wine red, lamp amber. */
+:root{
+  --bg:#f1f4f8; --card:#ffffff; --fg:#14202e; --muted:#5b6a7b; --line:#dbe2ea;
+  --accent:#a4243b; --accent-fg:#ffffff; --amber:#a86f00; --amber-bg:#fbf0d9;
+  --good:#1d7a4b; --bad:#b3261e; --soft:#e8edf4;
+  --font-body:'Heebo','Arial Hebrew',Arial,sans-serif; --font-head:'Rubik','Heebo',Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e151e; --card:#17212d; --fg:#e8edf3; --muted:#95a3b3; --line:#263444;
+  --accent:#e2596f; --accent-fg:#1a0a0e; --amber:#e6ac3c; --amber-bg:#2e2412;
+  --good:#52c58a; --bad:#f0746d; --soft:#1f2b39; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e151e; --card:#17212d; --fg:#e8edf3; --muted:#95a3b3; --line:#263444;
+  --accent:#e2596f; --accent-fg:#1a0a0e; --amber:#e6ac3c; --amber-bg:#2e2412;
+  --good:#52c58a; --bad:#f0746d; --soft:#1f2b39; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--font-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 84px;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--font-head);margin:0;text-wrap:balance}
+a{color:var(--accent)}
+.wrap{max-width:640px;margin:0 auto}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 0 8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.top h1{font-size:20px}
+header.top small{display:block;color:var(--muted);font-size:12.5px;font-family:var(--font-body);font-weight:400}
+.me{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.me select{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 8px}
+nav.tabs{position:fixed;inset:auto 0 0 0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:flex;
+  padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px));}
+nav.tabs button{flex:1;background:none;border:0;padding:8px 2px;border-radius:10px;color:var(--muted);font-weight:500;font-size:13px;cursor:pointer;min-width:0}
+nav.tabs button[aria-current="true"]{color:var(--accent);background:var(--soft);font-weight:700}
+nav.tabs button:focus-visible,.btn:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.v{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card h3{font-size:16px;margin-bottom:6px}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+.chip{display:inline-block;font-size:12px;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--muted);font-weight:500}
+.chip.city{background:var(--accent);color:var(--accent-fg)}
+.chip.amber{background:var(--amber-bg);color:var(--amber)}
+.btn{background:var(--accent);color:var(--accent-fg);border:0;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}
+.btn.ghost{background:var(--soft);color:var(--fg);font-weight:500}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.danger{background:none;color:var(--bad);font-weight:500;padding:5px 8px}
+input[type=text],input[type=number],select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+textarea{resize:vertical;min-height:60px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+/* hero */
+.hero{background:linear-gradient(160deg,#1c2a3d,#0f1a29);color:#f0f4f8;border:0;padding:18px}
+.hero h2{font-size:22px}
+.hero .big{font-family:var(--font-head);font-size:34px;font-weight:700;color:#f6c76a;line-height:1.1}
+.hero p{margin:4px 0 0;color:#c4cfdb}
+.next{display:flex;gap:12px;align-items:baseline}
+.next .t{font-family:var(--font-head);font-weight:700;font-size:18px;min-width:54px;font-variant-numeric:tabular-nums}
+/* plan */
+.day{padding:0;overflow:hidden}
+.day.today{border:2px solid var(--accent)}
+.day>.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;background:var(--soft)}
+.day .hd b{font-family:var(--font-head);font-size:16px}
+.ev{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+.ev .t{font-family:var(--font-head);font-weight:600;font-variant-numeric:tabular-nums;color:var(--fg);direction:ltr;text-align:right}
+.ev .b{min-width:0}
+.ev .ti{font-weight:700}
+.ev .sub{color:var(--muted);font-size:13.5px}
+.ev.idea .ti{font-weight:500}
+.ev.idea{border-inline-start:3px dashed var(--amber);}
+.ev.key{border-inline-start:3px solid var(--accent)}
+.tag{font-size:11px;font-weight:700;letter-spacing:.02em;margin-inline-end:6px;color:var(--accent)}
+.idea .tag{color:var(--amber)}
+.mapl{font-size:13px}
+/* money */
+.bal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bal>div{background:var(--soft);border-radius:12px;padding:10px;text-align:center;min-width:0}
+.bal b{display:block;font-family:var(--font-head);font-size:19px;font-variant-numeric:tabular-nums}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.tr{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.tr:first-of-type{border-top:0}
+.exp{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.exp:first-child{border-top:0}
+.exp .a{font-family:var(--font-head);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(5,10,16,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet>div{background:var(--card);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shares{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}
+/* photos */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.grid button{border:0;padding:0;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--soft);cursor:pointer;position:relative}
+.grid img{width:100%;height:100%;object-fit:cover;display:block}
+.grid .cap{position:absolute;inset:auto 0 0 0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;font-size:12px;padding:14px 8px 6px;text-align:start}
+.lb img{max-height:62vh;max-width:100%;border-radius:10px;align-self:center}
+/* info */
+details.card summary{cursor:pointer;font-family:var(--font-head);font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;gap:8px}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary::after{content:"+";color:var(--muted)}
+details.card[open] summary::after{content:"–"}
+details.card .in{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+dt{color:var(--muted)}dd{margin:0}
+.chk{display:flex;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.chk:first-of-type{border-top:0}
+.chk input{width:20px;height:20px;flex:none;accent-color:var(--accent)}
+.chk.done span{text-decoration:line-through;color:var(--muted)}
+.chk span{flex:1;min-width:0}
+.banner{background:var(--amber-bg);color:var(--amber);border-radius:10px;padding:8px 12px;font-size:13px}
+.empty{text-align:center;color:var(--muted);padding:22px 8px}
+.toast{position:fixed;inset:auto 0 calc(84px + env(safe-area-inset-bottom,0px)) 0;margin:auto;width:max-content;max-width:90%;background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:10px;z-index:30;font-size:14px}
+@media (min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .2s}}
+</style>
+
+<div class="wrap" id="root" dir="rtl" lang="he">
+  <header class="top">
+    <h1>קרקוב וורוצלאב<small id="sub">18–23 בנובמבר 2026</small></h1>
+    <label class="me">אני: <select id="who" aria-label="מי אני"></select></label>
+  </header>
+  <div id="banner"></div>
+  <main id="view"></main>
+</div>
+<nav class="tabs" id="tabs" dir="rtl" aria-label="ניווט"></nav>
+<div id="overlay"></div>
+
+<script>
+(function(){
+document.documentElement.dir='rtl';document.documentElement.lang='he';
+
+/* ---------- static trip data ---------- */
+var DAYS=[
+{id:'d1',date:'2026-11-18',dow:'רביעי',city:'קרקוב',title:'טיסה והגעה',ev:[
+ {t:'11:10',k:'flight',key:1,ti:'המראה מנתב״ג, טרמינל 1',sub:'Wizz Air · תל אביב ← קרקוב. עלייה למטוס באוטובוס (אין שרוול). דרכונים ביד.'},
+ {t:'14:05',k:'flight',key:1,ti:'נחיתה בקרקוב (שעון מקומי, שעה אחורה)',sub:'מונית Bolt ישירות למלון, בלי תחבורה ציבורית עם מזוודות.'},
+ {t:'~15:30',k:'hotel',ti:'צ׳ק-אין: Leonardo Boutique Hotel Krakow Old Town',sub:'2 חדרים, מיטות נפרדות, ארוחת בוקר כלולה.',map:'Leonardo Boutique Hotel Krakow Old Town'},
+ {t:'15:40',k:'note',ti:'שקיעה',sub:'אחרי זה חושך. טמפרטורה 7–12 מעלות.'},
+ {t:'18:30',k:'idea',ti:'כיכר השוק (Rynek Główny) וטיול בעיר העתיקה',sub:'כיכר השוק הראשית, מרחק הליכה מהמלון.',map:'Rynek Główny Kraków'},
+ {t:'20:00',k:'idea',ti:'ארוחת ערב ראשונה ובר מרתף',sub:'ברים במרתפים עתיקים בעיר העתיקה.'}]},
+{id:'d2',date:'2026-11-19',dow:'חמישי',city:'קרקוב',title:'יום בקרקוב',ev:[
+ {t:'בוקר',k:'idea',ti:'ארוחת בוקר במלון ויציאה לעיר העתיקה',sub:'ארמון וואוול (Wawel) והעיר העתיקה.',map:'Wawel Royal Castle'},
+ {t:'צהריים',k:'idea',ti:'רובע קז׳ימייז׳ (הרובע היהודי)',sub:'אזור היסטורי ביום, חיי לילה בערב.',map:'Kazimierz Kraków'},
+ {t:'ערב',k:'idea',ti:'זפייקאנקה בכיכר Plac Nowy ובילוי בקז׳ימייז׳',sub:'אוכל רחוב ובארים קטנים.',map:'Plac Nowy Kraków'},
+ {t:'לפני שינה',k:'note',ti:'להתארגן לרכבת של מחר 07:55',sub:'הכרטיסים באפליקציית הרכבות, בדקו שיש אינטרנט בנייד.'}]},
+{id:'d3',date:'2026-11-20',dow:'שישי',city:'ורוצלאב',title:'רכבת לורוצלאב ושוק חג המולד',ev:[
+ {t:'07:55',k:'train',key:1,ti:'רכבת מתחנת Kraków Główny',sub:'מחלקה ראשונה, 3 כרטיסים. מזוודה קטנה ללילה אחד.',map:'Kraków Główny railway station'},
+ {t:'10:50',k:'train',key:1,ti:'הגעה לורוצלאב',sub:'מתחנת Wrocław Główny לעיר העתיקה, אפשר להשאיר מזוודות במלון.',map:'Wrocław Główny railway station'},
+ {t:'11:00',k:'hotel',ti:'Focus Premium Wrocław: צ׳ק-אין או השארת מזוודות',sub:'2 חדרים, ארוחת בוקר כלולה, ממש ליד כיכר השוק.',map:'Focus Premium Wrocław'},
+ {t:'13:00',k:'idea',ti:'כיכר השוק (Rynek) וציד גמדים',sub:'אלפי פסלוני גמדים קטנים בכל העיר. סיבוב עם בירה ביד.',map:'Rynek Wrocław'},
+ {t:'15:30',k:'idea',ti:'אוכל פולני: פירוגי וז׳ורק בלחם',sub:'אחת המסעדות סביב הכיכר.'},
+ {t:'17:00',k:'idea',ti:'שוק חג המולד, יום הפתיחה',sub:'יין חם (Grzaniec) בספלי מגף, בשרים על האש, גבינת Oscypek.',map:'Wrocław Christmas Market'},
+ {t:'21:30',k:'idea',ti:'ג׳אז: Mleczarnia Club & Cafe (אופציונלי)',sub:'פסטיבל Jazztopad.',map:'Mleczarnia Club Wrocław'}]},
+{id:'d4',date:'2026-11-21',dow:'שבת',city:'ורוצלאב ← קרקוב',title:'בוקר בורוצלאב וחזרה',ev:[
+ {t:'09:30',k:'idea',ti:'אוניברסיטת ורוצלאב ואולם Aula Leopoldina',sub:'אולם בארוק, אפשר לעלות למגדל התצפית על האודר.',map:'Aula Leopoldina Wrocław'},
+ {t:'11:30',k:'idea',ti:'אי הקתדרלות (Ostrów Tumski)',sub:'החלק העתיק ביותר בעיר, כנסיות ורחובות מרוצפים.',map:'Ostrów Tumski Wrocław'},
+ {t:'13:30',k:'idea',ti:'ארוחת צהריים מאוחרת ואיסוף מזוודות',sub:''},
+ {t:'15:30',k:'note',ti:'יציאה לתחנת הרכבת',sub:'להגיע מוקדם, הרכבת ב־16:10.'},
+ {t:'16:10',k:'train',key:1,ti:'רכבת מ־Wrocław Główny לקרקוב',sub:'מחלקה ראשונה.'},
+ {t:'19:25',k:'train',key:1,ti:'הגעה לקרקוב',sub:'מונית Bolt למלון.'},
+ {t:'~20:00',k:'hotel',ti:'צ׳ק-אין: Art Boutique Aparthotel Krakow',sub:'2 חדרים גדולים, 2 מיטות זוגיות בחדר של דן ושל החבר. ללא ארוחת בוקר.',map:'Art Boutique Aparthotel Kraków'}]},
+{id:'d5',date:'2026-11-22',dow:'ראשון',city:'קרקוב',title:'היום האחרון, הלילה האחרון',ev:[
+ {t:'יום',k:'idea',ti:'מכרות המלח בווייליצ׳קה',sub:'אזור נסיעה II, אוטובוס או Bolt. אפשר לדלג לטובת מרחצאות תרמיים.',map:'Wieliczka Salt Mine'},
+ {t:'יום',k:'idea',ti:'מרחצאות תרמיים וסאונה מחוץ לעיר',sub:'לבדוק שעות פתיחה לפני שיוצאים.'},
+ {t:'אחה״צ',k:'idea',ti:'קניות ומזכרות',sub:'ספל מגף משוק החג, מתנות.'},
+ {t:'ערב',k:'idea',ti:'ארוחת סיום וברים',sub:'לא ללכת אחרי יחצנים עם מטריות ורודות ברחוב Floriańska.'},
+ {t:'לפני שינה',k:'note',ti:'לארוז הכל. ההמראה מחר בבוקר מוקדם מאוד',sub:'להזמין Bolt מראש לשעה ~02:45. לישון מעט.'}]},
+{id:'d6',date:'2026-11-23',dow:'שני',city:'קרקוב ← ישראל',title:'טיסה הביתה',ev:[
+ {t:'~02:45',k:'note',key:1,ti:'יציאה מהמלון לשדה התעופה',sub:'צ׳ק-אאוט: בדקו מראש מול המלון שאפשר לצאת באמצע הלילה.'},
+ {t:'05:35',k:'flight',key:1,ti:'המראה מקרקוב לתל אביב',sub:'Wizz Air. השעה לפי חיפוש הטיסות, כדאי לאמת מול הכרטיס.'},
+ {t:'10:15',k:'flight',key:1,ti:'נחיתה בנתב״ג',sub:'שעון ישראל.'}]}
+];
+var KIND={flight:'טיסה',train:'רכבת',hotel:'מלון',idea:'הצעה',note:'תזכורת'};
+var PEOPLE=['yarden','dan','ben'];
+var DEFAULT_NAMES={yarden:'ירדן',dan:'דן',ben:'בן'};
+var DEFAULT_RATES={ILS:1,PLN:0.8,EUR:3.6};
+var SYM={ILS:'₪',PLN:'zł',EUR:'€'};
+
+/* ---------- tiny helpers ---------- */
+function h(tag,attrs){var e=document.createElement(tag);attrs=attrs||{};
+  for(var k in attrs){var v=attrs[k];if(v==null||v===false)continue;
+    if(k==='class')e.className=v;else if(k.slice(0,2)==='on')e.addEventListener(k.slice(2),v);
+    else if(k==='text')e.textContent=v;else if(k==='value')e.value=v;else if(k==='checked')e.checked=!!v;
+    else e.setAttribute(k,v===true?'':v);}
+  for(var i=2;i<arguments.length;i++)add(e,arguments[i]);return e}
+function add(e,c){if(c==null||c===false)return;if(Array.isArray(c))c.forEach(function(x){add(e,x)});
+  else e.appendChild(typeof c==='object'?c:document.createTextNode(String(c)))}
+function $(id){return document.getElementById(id)}
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function toast(msg){var t=h('div',{class:'toast',role:'status',text:msg});document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}
+function pad(n){return n<10?'0'+n:''+n}
+function dkey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function dshort(s){var p=s.split('-');return +p[2]+'.'+(+p[1])}
+function money(n,cur){var r=Math.round(n*100)/100;return (cur&&cur!=='ILS'?'':'')+r.toLocaleString('he-IL',{maximumFractionDigits:2})+' '+(SYM[cur||'ILS']||cur)}
+
+/* ---------- storage: shared db when available, local fallback ---------- */
+var S={settings:{},expenses:[],photos:[],todo:[],notes:{}};
+var mode='local',assets=null,listeners=[];
+function Local(name){return{
+  key:'trip:'+name,
+  all:function(){return lsGet(this.key,[])},
+  save:function(a){lsSet(this.key,a)},
+  onSnapshot:function(cb){var self=this;cb(self.all());listeners.push([name,function(){cb(self.all())}])},
+  set:function(id,d){var a=this.all().filter(function(x){return x.id!==id});a.push(Object.assign({id:id},d));this.save(a);this.fire()},
+  add:function(d){this.set('l'+Date.now()+Math.random().toString(36).slice(2,6),d)},
+  update:function(id,d){var a=this.all();for(var i=0;i<a.length;i++)if(a[i].id===id)Object.assign(a[i],d);this.save(a);this.fire()},
+  del:function(id){this.save(this.all().filter(function(x){return x.id!==id}));this.fire()},
+  fire:function(){var n=name;listeners.forEach(function(l){if(l[0]===n)l[1]()})}}}
+function Remote(db,name){var c=db.collection(name);return{
+  onSnapshot:function(cb,err){c.onSnapshot(function(s){cb(s.docs.map(function(d){return Object.assign({id:d.id},d.data())}))},err)},
+  set:function(id,d){return c.doc(id).set(d)},
+  add:function(d){return c.add(d)},
+  update:function(id,d){return c.doc(id).update(d)},
+  del:function(id){return c.doc(id).delete()}}}
+var C={};
+function fail(e){toast('השמירה נכשלה: '+((e&&e.message)||'אין הרשאה'))}
+function wrap(p){if(p&&p.catch)p.catch(fail);return p}
+
+/* ---------- derived ---------- */
+function names(){return Object.assign({},DEFAULT_NAMES,(S.settings.main&&S.settings.main.names)||{})}
+function rates(){return Object.assign({},DEFAULT_RATES,(S.settings.main&&S.settings.main.rates)||{})}
+function me(){var m=lsGet('trip:me',null);return PEOPLE.indexOf(m)>=0?m:null}
+
+function balances(){
+  var r=rates(),bal={yarden:0,dan:0,ben:0};
+  S.expenses.forEach(function(e){
+    var rate=r[e.cur||'ILS']||1;
+    if(e.kind==='payment'){bal[e.from]+=e.amount*rate;bal[e.to]-=e.amount*rate;return}
+    bal[e.payer]+=e.amount*rate;
+    if(e.shares){PEOPLE.forEach(function(p){if(e.shares[p])bal[p]-=e.shares[p]*rate})}
+    else{var sp=e.split&&e.split.length?e.split:PEOPLE;sp.forEach(function(p){bal[p]-=e.amount*rate/sp.length})}
+  });
+  return bal}
+function transfers(bal){
+  var cr=[],de=[];PEOPLE.forEach(function(p){var v=Math.round(bal[p]*100)/100;if(v>0.5)cr.push([p,v]);else if(v<-0.5)de.push([p,-v])});
+  cr.sort(function(a,b){return b[1]-a[1]});de.sort(function(a,b){return b[1]-a[1]});
+  var out=[];while(cr.length&&de.length){var m=Math.min(cr[0][1],de[0][1]);out.push({from:de[0][0],to:cr[0][0],amount:Math.round(m)});
+    cr[0][1]-=m;de[0][1]-=m;if(cr[0][1]<0.5)cr.shift();if(de[0][1]<0.5)de.shift()}
+  return out}
+
+/* ---------- views ---------- */
+var TABS=[['today','היום'],['plan','לו״ז'],['money','כסף'],['photos','תמונות'],['info','מידע']];
+var tab='today';
+function render(){
+  var act=document.activeElement;
+  if(act&&act.closest&&act.closest('#view')&&/INPUT|TEXTAREA|SELECT/.test(act.tagName))return;
+  var v=$('view');v.textContent='';
+  v.appendChild(({today:vToday,plan:vPlan,money:vMoney,photos:vPhotos,info:vInfo})[tab]());
+  var nm=names(),sel=$('who');
+  if(!sel.dataset.ready||sel.dataset.sig!==JSON.stringify(nm)){
+    sel.textContent='';sel.appendChild(h('option',{value:'',text:'בחרו'}));
+    PEOPLE.forEach(function(p){sel.appendChild(h('option',{value:p,text:nm[p]}))});
+    sel.value=me()||'';sel.dataset.ready='1';sel.dataset.sig=JSON.stringify(nm)}
+}
+function setTab(t){tab=t;try{history.replaceState(null,'','#'+t)}catch(e){}
+  var n=$('tabs');n.textContent='';
+  TABS.forEach(function(x){n.appendChild(h('button',{'aria-current':x[0]===t,onclick:function(){setTab(x[0]);window.scrollTo(0,0)},text:x[1]}))});
+  var act=document.activeElement;if(act&&act.blur)act.blur();render()}
+
+function dayIndexNow(){var k=dkey(new Date());for(var i=0;i<DAYS.length;i++)if(DAYS[i].date===k)return i;return -1}
+
+function evEl(e){
+  var b=h('div',{class:'b'},h('div',{class:'ti'},h('span',{class:'tag',text:KIND[e.k]}),e.ti));
+  if(e.sub)b.appendChild(h('div',{class:'sub',text:e.sub}));
+  if(e.map)b.appendChild(h('a',{class:'mapl',target:'_blank',rel:'noopener',href:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.map),text:'פתח במפה'}));
+  return h('div',{class:'ev '+(e.k==='idea'?'idea':e.key?'key':'')},h('div',{class:'t',text:e.t}),b)}
+
+function vToday(){
+  var el=h('section',{class:'v'}),i=dayIndexNow(),now=new Date();
+  if(i<0){
+    var first=new Date(2026,10,18),last=new Date(2026,10,23,23,59);
+    if(now<first){var n=Math.ceil((first-now)/864e5);
+      el.appendChild(h('div',{class:'card hero'},h('p',{text:'עוד'}),h('div',{class:'big',text:n+' ימים'}),h('p',{text:'ועולים על המטוס לקרקוב.'})))}
+    else if(now>last)el.appendChild(h('div',{class:'card hero'},h('h2',{text:'הטיול הסתיים'}),h('p',{text:'התמונות וההוצאות עדיין כאן.'})));
+    i=0}
+  else{
+    var d=DAYS[i];
+    var hero=h('div',{class:'card hero'},h('p',{text:'יום '+(i+1)+' מתוך 6 · '+d.dow+' '+dshort(d.date)+' · '+d.city}),h('h2',{text:d.title}));
+    var hm=pad(now.getHours())+':'+pad(now.getMinutes());
+    var nx=d.ev.filter(function(e){return /^\d/.test(e.t)&&e.t.replace('~','')>=hm})[0];
+    if(nx){hero.appendChild(h('div',{style:'height:10px'}));hero.appendChild(h('div',{class:'next'},h('div',{class:'t',style:'color:#f6c76a',text:nx.t}),h('div',{},h('b',{text:nx.ti}),h('div',{style:'color:#c4cfdb;font-size:13px',text:nx.sub}))))}
+    el.appendChild(hero)}
+  var d2=DAYS[i];
+  el.appendChild(h('div',{class:'card day'+(dayIndexNow()===i?' today':'')},h('div',{class:'hd'},h('b',{text:d2.dow+' '+dshort(d2.date)+' · '+d2.title}),h('span',{class:'chip city',text:d2.city})),d2.ev.map(evEl)));
+  var bal=balances(),t=transfers(bal);
+  var mc=h('div',{class:'card'},h('div',{class:'row spread'},h('h3',{text:'חשבון בין שלושתנו'}),h('button',{class:'btn ghost sm',onclick:function(){setTab('money')},text:'לכסף'})));
+  if(!S.expenses.length)mc.appendChild(h('div',{class:'muted',text:'עדיין אין הוצאות.'}));
+  else if(!t.length)mc.appendChild(h('div',{class:'muted',text:'הכל מסודר.'}));
+  else t.forEach(function(x){mc.appendChild(h('div',{class:'tr'},h('span',{text:names()[x.from]+' חייב ל'+names()[x.to]}),h('b',{text:money(x.amount)})))});
+  el.appendChild(mc);
+  return el}
+
+function vPlan(){
+  var el=h('section',{class:'v'}),ti=dayIndexNow();
+  el.appendChild(h('div',{class:'muted',text:'פריט עם קו מקווקו הוא הצעה לבילוי, לא הזמנה. פריט עם קו אדום הוא טיסה, רכבת או נקודת זמן קבועה.'}));
+  DAYS.forEach(function(d,i){
+    el.appendChild(h('div',{class:'card day'+(i===ti?' today':''),id:'day-'+d.id},
+      h('div',{class:'hd'},h('b',{text:d.dow+' '+dshort(d.date)+' · '+d.title}),h('span',{class:'chip city',text:d.city})),d.ev.map(evEl)))});
+  return el}
+
+/* money */
+function expLine(e){
+  var nm=names(),cur=e.cur||'ILS',main,sub;
+  if(e.kind==='payment'){main=nm[e.from]+' העביר ל'+nm[e.to];sub='תשלום · '+(e.date||'')}
+  else{main=e.title;var sp=e.shares?'חלוקה מותאמת':(e.split&&e.split.length&&e.split.length<3?'בין '+e.split.map(function(p){return nm[p]}).join(' ו'):'שווה בשווה');sub=nm[e.payer]+' שילם · '+sp+(e.date?' · '+e.date:'')}
+  var r=rates()[cur]||1,line=h('div',{class:'exp'},
+    h('div',{style:'min-width:0'},h('div',{style:'font-weight:500',text:main}),h('div',{class:'muted',style:'font-size:13px',text:sub+(e.note?' · '+e.note:'')})),
+    h('div',{style:'text-align:end'},h('div',{class:'a',text:money(e.amount,cur)}),cur!=='ILS'?h('div',{class:'muted',style:'font-size:12px',text:'≈ '+money(e.amount*r)}):null,
+      h('button',{class:'btn danger',onclick:function(ev){var b=ev.currentTarget;if(b.dataset.arm){wrap(C.expenses.del(e.id))}else{b.dataset.arm=1;b.textContent='בטוח? לחצו שוב';setTimeout(function(){b.dataset.arm='';b.textContent='מחיקה'},2500)}},text:'מחיקה'})));
+  return line}
+function vMoney(){
+  var el=h('section',{class:'v'}),bal=balances(),nm=names(),t=transfers(bal);
+  var b=h('div',{class:'bal'});PEOPLE.forEach(function(p){var v=Math.round(bal[p]);
+    b.appendChild(h('div',{},h('span',{class:'muted',text:nm[p]}),h('b',{class:v>0?'pos':v<0?'neg':'',text:(v>0?'+':'')+money(v)}),h('span',{class:'muted',style:'font-size:12px',text:v>0?'מגיע לו':v<0?'חייב':'מסודר'})))});
+  var top=h('div',{class:'card'},h('h3',{text:'מי חייב למי'}),b);
+  if(t.length){var l=h('div',{style:'margin-top:10px'});t.forEach(function(x){
+    l.appendChild(h('div',{class:'tr'},h('span',{},h('b',{text:nm[x.from]}),' ← ',h('b',{text:nm[x.to]})),h('span',{class:'row'},h('b',{text:money(x.amount)}),
+      h('button',{class:'btn ghost sm',onclick:function(){wrap(C.expenses.add({kind:'payment',from:x.from,to:x.to,amount:x.amount,cur:'ILS',date:dkey(new Date()),ts:Date.now()}));toast('נרשם תשלום')},text:'שולם'}))))});top.appendChild(l)}
+  else if(S.expenses.length)top.appendChild(h('div',{class:'muted',style:'margin-top:8px',text:'כולם מסודרים.'}));
+  top.appendChild(h('div',{class:'muted',style:'font-size:12px;margin-top:8px',text:'הסכומים בשקלים לפי שער שאפשר לשנות בלשונית מידע. סכום שמסומן כחוב ממשיך להיחשב עד שנרשם תשלום.'}));
+  el.appendChild(top);
+  el.appendChild(h('button',{class:'btn',onclick:function(){expenseSheet()},text:'הוספת הוצאה'}));
+  var list=h('div',{class:'card'},h('h3',{text:'כל ההוצאות'}));
+  var xs=S.expenses.slice().sort(function(a,b){return (b.ts||0)-(a.ts||0)});
+  if(!xs.length)list.appendChild(h('div',{class:'empty',text:'עדיין אין הוצאות. מי ששילם, מוסיף כאן ובוחר בין מי מחלקים.'}));
+  xs.forEach(function(e){list.appendChild(expLine(e))});
+  el.appendChild(list);return el}
+
+function closeSheet(){$('overlay').textContent=''}
+function expenseSheet(){
+  var nm=names(),m=me();
+  var title=h('input',{type:'text',id:'x-title',placeholder:'למשל: ארוחת ערב'}),
+    amt=h('input',{type:'number',id:'x-amt',inputmode:'decimal',min:'0',step:'any',placeholder:'0'}),
+    cur=h('select',{id:'x-cur'},['PLN','ILS','EUR'].map(function(c){return h('option',{value:c,text:{PLN:'זלוטי (zł)',ILS:'שקל (₪)',EUR:'אירו (€)'}[c]})})),
+    payer=h('select',{id:'x-payer'},PEOPLE.map(function(p){return h('option',{value:p,text:nm[p]})}));
+  payer.value=m||'yarden';
+  var checks={},cust={},custMode=false;
+  var box=h('div',{class:'shares'});
+  PEOPLE.forEach(function(p){checks[p]=h('input',{type:'checkbox',id:'x-s-'+p,checked:true});
+    cust[p]=h('input',{type:'number',id:'x-c-'+p,inputmode:'decimal',min:'0',step:'any',placeholder:'סכום',hidden:true});
+    box.appendChild(h('label',{class:'row',for:'x-s-'+p,style:'gap:6px'},checks[p],nm[p]));box.appendChild(cust[p])});
+  var cm=h('input',{type:'checkbox',id:'x-cm',onchange:function(){custMode=cm.checked;PEOPLE.forEach(function(p){cust[p].hidden=!custMode;checks[p].disabled=custMode})}});
+  var err=h('div',{class:'neg',role:'alert'});
+  var s=h('div',{class:'sheet',onclick:function(e){if(e.target===s)closeSheet()}},h('div',{role:'dialog','aria-label':'הוצאה חדשה',dir:'rtl'},
+    h('h3',{text:'הוצאה חדשה'}),
+    h('label',{class:'f',for:'x-title'},'על מה',title),
+    h('div',{class:'two'},h('label',{class:'f',for:'x-amt'},'סכום',amt),h('label',{class:'f',for:'x-cur'},'מטבע',cur)),
+    h('label',{class:'f',for:'x-payer'},'מי שילם',payer),
+    h('div',{class:'f'},h('span',{text:'מחלקים בין'}),box),
+    h('label',{class:'row',for:'x-cm',style:'gap:6px'},cm,'סכום שונה לכל אחד (למשל חדר שביקשו עליו יותר)'),
+    err,
+    h('div',{class:'row'},h('button',{class:'btn',onclick:function(){
+      var a=parseFloat(amt.value),t=title.value.trim();
+      if(!t){err.textContent='כתבו על מה ההוצאה.';return}
+      if(!(a>0)){err.textContent='הכניסו סכום גדול מאפס.';return}
+      var rec={kind:'expense',title:t,amount:a,cur:cur.value,payer:payer.value,date:dkey(new Date()),ts:Date.now()};
+      if(custMode){var sh={},sum=0;PEOPLE.forEach(function(p){var v=parseFloat(cust[p].value)||0;if(v>0){sh[p]=v;sum+=v}});
+        if(Math.abs(sum-a)>0.02*Math.max(1,a)){err.textContent='סכום החלוקה ('+Math.round(sum*100)/100+') לא שווה לסכום ההוצאה ('+a+').';return}
+        rec.shares=sh}
+      else{var sp=PEOPLE.filter(function(p){return checks[p].checked});if(!sp.length){err.textContent='בחרו לפחות אדם אחד.';return}rec.split=sp}
+      wrap(C.expenses.add(rec));closeSheet();toast('ההוצאה נשמרה')},text:'שמירה'}),
+      h('button',{class:'btn ghost',onclick:closeSheet,text:'ביטול'}))));
+  $('overlay').textContent='';$('overlay').appendChild(s);title.focus()}
+
+/* photos */
+function compress(file){return new Promise(function(res,rej){
+  var img=new Image(),u=URL.createObjectURL(file);
+  img.onload=function(){var m=1600,sc=Math.min(1,m/Math.max(img.width,img.height)),c=document.createElement('canvas');
+    c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    URL.revokeObjectURL(u);c.toBlob(function(b){b?res(b):rej(new Error('compress'))},'image/jpeg',.82)};
+  img.onerror=function(){URL.revokeObjectURL(u);rej(new Error('לא ניתן לקרוא את הקובץ'))};img.src=u})}
+function vPhotos(){
+  var el=h('section',{class:'v'}),nm=names();
+  if(!assets){el.appendChild(h('div',{class:'banner',text:'העלאת תמונות זמינה רק למי שנכנס לקישור עם הרשאת עריכה או תרומה. בקשו מירדן להזמין אתכם.'}))}
+  else{
+    var inp=h('input',{type:'file',id:'ph-in',accept:'image/*',multiple:true,hidden:true,onchange:function(){
+      var fs=[].slice.call(inp.files);inp.value='';if(!fs.length)return;
+      toast('מעלה '+fs.length+' תמונות…');
+      fs.reduce(function(p,f){return p.then(function(){return compress(f).then(function(b){return assets.upload(b)}).then(function(r){
+        var di=dayIndexNow();return C.photos.add({url:r.url,aid:r.id,by:me()||'',caption:'',day:di>=0?DAYS[di].id:'',ts:Date.now()})})})},Promise.resolve())
+        .then(function(){toast('התמונות נשמרו')}).catch(fail)}});
+    el.appendChild(h('div',{class:'row'},h('button',{class:'btn',onclick:function(){inp.click()},text:'הוספת תמונות'}),inp,h('span',{class:'muted',text:S.photos.length+' תמונות באלבום'})))}
+  if(!S.photos.length)el.appendChild(h('div',{class:'card empty',text:'האלבום ריק. תמונות מהטיול של שלושתכם יופיעו כאן, מסודרות לפי יום.'}));
+  var groups={};S.photos.slice().sort(function(a,b){return (b.ts||0)-(a.ts||0)}).forEach(function(p){var k=p.day||'x';(groups[k]=groups[k]||[]).push(p)});
+  DAYS.map(function(d){return d.id}).concat(['x']).forEach(function(k){
+    if(!groups[k])return;var d=DAYS.filter(function(x){return x.id===k})[0];
+    var g=h('div',{class:'grid'});
+    groups[k].forEach(function(p){g.appendChild(h('button',{'aria-label':p.caption||'תמונה',onclick:function(){lightbox(p)}},h('img',{src:p.url,alt:p.caption||'תמונה מהטיול',loading:'lazy'}),p.caption?h('div',{class:'cap',text:p.caption}):null))});
+    el.appendChild(h('div',{class:'card'},h('h3',{text:d?d.dow+' '+dshort(d.date)+' · '+d.city:'תמונות נוספות'}),h('div',{style:'height:8px'}),g))});
+  return el}
+function lightbox(p){var nm=names();
+  var cap=h('input',{type:'text',id:'lb-cap',value:p.caption||'',placeholder:'כיתוב'});
+  var s=h('div',{class:'sheet',onclick:function(e){if(e.target===s)closeSheet()}},h('div',{class:'lb',dir:'rtl'},
+    h('img',{src:p.url,alt:p.caption||'תמונה מהטיול'}),
+    h('div',{class:'muted',text:(p.by?'צולם על ידי '+nm[p.by]:'')}),
+    h('label',{class:'f',for:'lb-cap'},'כיתוב',cap),
+    h('div',{class:'row'},h('button',{class:'btn',onclick:function(){wrap(C.photos.update(p.id,{caption:cap.value.trim()}));closeSheet()},text:'שמירה'}),
+      h('button',{class:'btn ghost',onclick:closeSheet,text:'סגירה'}),
+      h('button',{class:'btn danger',onclick:function(ev){var b=ev.currentTarget;if(b.dataset.arm){wrap(C.photos.del(p.id));closeSheet()}else{b.dataset.arm=1;b.textContent='בטוח? לחצו שוב'}},text:'מחיקה'}))));
+  $('overlay').textContent='';$('overlay').appendChild(s)}
+
+/* info */
+function noteBox(id){var n=S.notes[id]||{};
+  return h('label',{class:'f'},'הערות שלנו (מספר הזמנה, מספר מושב, קוד כניסה)',
+    h('textarea',{id:'note-'+id,onchange:function(e){wrap(C.notes.set(id,{text:e.target.value}))},text:n.text||''}))}
+function infoCard(id,title,rows,extra,open){
+  var dl=h('dl');rows.forEach(function(r){dl.appendChild(h('dt',{text:r[0]}));var dd=h('dd');if(r[2])dd.appendChild(h('a',{target:'_blank',rel:'noopener',href:r[2],text:r[1]}));else dd.textContent=r[1];dl.appendChild(dd)});
+  return h('details',{class:'card',open:open?true:null},h('summary',{},title),h('div',{class:'in'},dl,extra||null,noteBox(id)))}
+function mapq(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+function vInfo(){
+  var el=h('section',{class:'v'});
+  el.appendChild(infoCard('flights','טיסות',[
+    ['הלוך','רביעי 18.11 · 11:10 תל אביב ← 14:05 קרקוב'],['חזור','שני 23.11 · 05:35 קרקוב ← 10:15 תל אביב'],['חברה','Wizz Air'],['נמל יציאה','נתב״ג טרמינל 1, עלייה לאוטובוס אל המטוס'],
+    ['לבדוק','השעות נלקחו מצילום חיפוש הטיסות בצ׳אט. אמתו מול הכרטיס.']],null,true));
+  el.appendChild(infoCard('train','רכבת קרקוב וורוצלאב',[
+    ['הלוך','שישי 20.11 · 07:55 Kraków Główny ← 10:50 Wrocław Główny'],['חזור','שבת 21.11 · 16:10 Wrocław Główny ← 19:25 Kraków Główny'],['מחלקה','ראשונה, 3 כרטיסים באפליקציה'],['ביטול','15% דמי ביטול']]));
+  el.appendChild(infoCard('h1','מלון 1: Leonardo Boutique Hotel Krakow Old Town',[
+    ['תאריכים','18.11 עד 20.11 · 2 לילות'],['חדרים','2 חדרים, מיטות נפרדות, ארוחת בוקר כלולה'],['ביטול','חינם'],['מפה','פתיחה במפה',mapq('Leonardo Boutique Hotel Krakow Old Town')]]));
+  el.appendChild(infoCard('h2','מלון 2: Focus Premium Wrocław',[
+    ['תאריכים','20.11 עד 21.11 · לילה אחד'],['חדרים','2 חדרים, מיטות נפרדות, ארוחת בוקר כלולה'],['ביטול','חינם'],['מפה','פתיחה במפה',mapq('Focus Premium Wrocław')]]));
+  el.appendChild(infoCard('h3','מלון 3: Art Boutique Aparthotel Krakow',[
+    ['תאריכים','21.11 עד 23.11 · 2 לילות'],['חדרים','2 חדרים גדולים, ללא ארוחת בוקר'],['ביטול','חינם עד 19.11'],['מפה','פתיחה במפה',mapq('Art Boutique Aparthotel Kraków')],
+    ['שימו לב','יציאה לשדה ב־23.11 באמצע הלילה, לתאם עם הקבלה']]));
+  var tips=h('details',{class:'card'},h('summary',{},'טיפים לקרקוב וורוצלאב'),h('div',{class:'in'},
+    [['מטבע','זלוטי פולני (PLN). אשראי עובד כמעט בכל מקום.'],
+     ['מוניות','Bolt ו־Uber זולות ובטוחות. לא לעצור מוניות רחוב, במיוחד בלילה.'],
+     ['תחבורה בקרקוב','חשמליות ואוטובוסים עם אפליקציית Jakdojade. נסיעה בודדת כ־6 zł, כרטיס 24 שעות כ־20 zł. חובה לתקף כרטיס, הקנס גבוה.'],
+     ['מהשדה','Bolt ישירות למלון, בערך 20 דקות. רכבת הפרברים לתחנה המרכזית עולה כ־20 zł.'],
+     ['מלכודות','יחצנים עם מטריות ורודות בכיכר השוק וברחוב Floriańska שמזמינים למועדון חשפנות. מתעלמים בנימוס. שם מחייבים סכומים עצומים באשראי.'],
+     ['מזג אוויר','7 עד 12 מעלות, גשום. שכבות, נעליים סגורות, מטרייה.'],
+     ['חושך','השמש שוקעת בסביבות 15:40.'],
+     ['כביסה','אפשר במכבסה או במלון במהלך היום.'],
+     ['חירום','112 בכל פולין.']].map(function(r){return h('div',{},h('b',{text:r[0]+': '}),r[1])})));
+  el.appendChild(tips);
+  /* checklist */
+  var cl=h('details',{class:'card',open:true},h('summary',{},'רשימת משימות ואריזה'));
+  var inn=h('div',{class:'in'});
+  S.todo.slice().sort(function(a,b){return (a.order||0)-(b.order||0)}).forEach(function(t){
+    inn.appendChild(h('label',{class:'chk'+(t.done?' done':'')},h('input',{type:'checkbox',checked:t.done,onchange:function(e){wrap(C.todo.update(t.id,{done:e.target.checked}))}}),h('span',{text:t.text}),
+      h('button',{class:'btn danger',type:'button',onclick:function(e){e.preventDefault();wrap(C.todo.del(t.id))},'aria-label':'מחיקת משימה',text:'×'})))});
+  var ni=h('input',{type:'text',id:'todo-new',placeholder:'הוספת משימה'});
+  inn.appendChild(h('div',{class:'row',style:'flex-wrap:nowrap'},ni,h('button',{class:'btn sm',onclick:function(){var v=ni.value.trim();if(!v)return;wrap(C.todo.add({text:v,done:false,order:Date.now()}));ni.value=''},text:'הוספה'})));
+  cl.appendChild(inn);el.appendChild(cl);
+  /* settings */
+  var nm=names(),rt=rates(),st=h('details',{class:'card'},h('summary',{},'הגדרות: שמות ושערי מטבע'));
+  var si=h('div',{class:'in'}),ins={};
+  PEOPLE.forEach(function(p){ins[p]=h('input',{type:'text',id:'set-'+p,value:nm[p]});si.appendChild(h('label',{class:'f',for:'set-'+p},'שם: '+DEFAULT_NAMES[p]+' (ברירת מחדל)',ins[p]))});
+  var pl=h('input',{type:'number',id:'set-pln',step:'any',value:rt.PLN}),eu=h('input',{type:'number',id:'set-eur',step:'any',value:rt.EUR});
+  si.appendChild(h('div',{class:'two'},h('label',{class:'f',for:'set-pln'},'שקלים לזלוטי אחד',pl),h('label',{class:'f',for:'set-eur'},'שקלים לאירו אחד',eu)));
+  si.appendChild(h('button',{class:'btn',onclick:function(){var n={};PEOPLE.forEach(function(p){n[p]=ins[p].value.trim()||DEFAULT_NAMES[p]});
+    wrap(C.settings.set('main',{names:n,rates:{ILS:1,PLN:parseFloat(pl.value)||DEFAULT_RATES.PLN,EUR:parseFloat(eu.value)||DEFAULT_RATES.EUR}}));toast('נשמר')},text:'שמירה'}));
+  st.appendChild(si);el.appendChild(st);
+  return el}
+
+/* ---------- boot ---------- */
+function bootStore(db){
+  ['settings','expenses','photos','todo','notes'].forEach(function(n){
+    C[n]=db?Remote(db,n):Local(n);
+    C[n].onSnapshot(function(rows){
+      if(n==='settings'||n==='notes'){var o={};rows.forEach(function(r){o[r.id]=r});S[n]=o}else S[n]=rows;
+      render()},function(){});
+  })}
+$('who').addEventListener('change',function(e){lsSet('trip:me',e.target.value||null)});
+var h0=(location.hash||'').slice(1);
+setTab(TABS.some(function(t){return t[0]===h0})?h0:'today');
+bootStore(null);
+(async function(){
+  try{
+    if(!window.claude||!claude.use)return;
+    var db=await claude.use('db');
+    if(db){mode='shared';listeners=[];bootStore(db)}
+    else $('banner').appendChild(h('div',{class:'banner',text:'לא מחוברים: הנתונים נשמרים רק במכשיר הזה. התחברו כדי לשתף עם דן והחבר.'}));
+    assets=await claude.use('assets');render();
+  }catch(e){}
+})();
+})();
+</script>
